@@ -34,6 +34,7 @@ const normalizeEventPhone = value => {const raw=cleanPhone(value);if(raw.startsW
 const e164 = value => /^\+[1-9]\d{7,14}$/.test(String(value||''));
 app.use(express.json({limit:'1mb'}));
 app.use('/api',auth);
+app.use('/api',(req,res,next)=>{const started=Date.now();res.on('finish',()=>console.log(JSON.stringify({kind:'api',method:req.method,path:req.path,status:res.statusCode,durationMs:Date.now()-started})));next()});
 app.use(express.static('public'));
 app.get('/api/status', async (_req,res) => {
   const suppressions=db.prepare('SELECT COUNT(*) n FROM suppression').get().n;
