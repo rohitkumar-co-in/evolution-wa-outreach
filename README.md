@@ -21,7 +21,7 @@ Only the mobile number and WhatsApp message are required. During upload, map tho
 
 ## Scheduling
 
-Times use `Europe/London` and follow daylight-saving changes. A campaign requires a start date/time, optional end date/time, a daily count range, and at least one window. Three configurable windows can be enabled independently. The server enforces campaign dates, enabled windows, the daily range, opt-out suppression, and a fixed 15-minute minimum interval. The interval is a conservative pacing control, not a way to evade platform enforcement.
+Times use `Europe/London` and follow daylight-saving changes. The start date defaults to today; leaving it blank starts as soon as the campaign is started. An end date/time is optional. Each campaign also needs a daily count range and at least one sending window. Three configurable windows can be enabled independently. The server enforces campaign dates, enabled windows, the daily range, opt-out suppression, and a fixed 15-minute minimum interval. The interval is a conservative pacing control, not a way to evade platform enforcement.
 
 ## n8n
 
