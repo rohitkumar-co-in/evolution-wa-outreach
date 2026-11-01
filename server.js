@@ -10,7 +10,7 @@ import { DateTime } from 'luxon';
 const required = ['EVOLUTION_API_URL', 'EVOLUTION_API_KEY', 'N8N_WEBHOOK_SECRET'];
 for (const key of required) if (!process.env[key]) { console.error(`Missing ${key}`); process.exit(1); }
 if (!process.env.ADMIN_PASSWORD && !process.env.APP_SECRET) { console.error('Set ADMIN_PASSWORD in Coolify'); process.exit(1); }
-if (process.env.ADMIN_PASSWORD && process.env.ADMIN_PASSWORD.length < 12) console.warn('ADMIN_PASSWORD is shorter than the recommended 12 characters');
+if (process.env.ADMIN_PASSWORD && process.env.ADMIN_PASSWORD.length < 8) { console.error('ADMIN_PASSWORD must be at least 8 characters'); process.exit(1); }
 if (process.env.N8N_WEBHOOK_SECRET.length < 24) { console.error('N8N_WEBHOOK_SECRET must be at least 24 chars'); process.exit(1); }
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 12 * 1024 * 1024 } });

@@ -4,7 +4,7 @@ Standalone campaign dashboard for consent-based WhatsApp outreach. Designed for 
 
 ## Environment
 
-- `ADMIN_PASSWORD`: dashboard login password; set this in Coolify, with at least 12 characters.
+- `ADMIN_PASSWORD`: dashboard login password; set this in Coolify, with at least 8 characters.
 - `APP_SECRET`: legacy dashboard-password fallback until `ADMIN_PASSWORD` is set.
 - `EVOLUTION_API_URL`: Evolution API base URL, e.g. `https://evo.leadomi.com`.
 - `EVOLUTION_API_KEY`: Evolution global API key.
