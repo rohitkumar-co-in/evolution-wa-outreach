@@ -16,9 +16,7 @@ The app refuses to start without secrets. Keep the database volume persistent an
 
 ## CSV columns
 
-Required: `owner_name,business_name,phone,whatsapp_message,consent,consent_date,consent_source`
-
-`consent` must be `yes`, `true`, or `1`. Rows without affirmative consent or required consent evidence are imported as held and are never dispatched. `phone` must be a UK number in E.164 format beginning `+44`. An optional `subscriber_type` column accepts `corporate`, `sole_trader`, or `partnership`.
+Only the mobile number and WhatsApp message are required. During upload, map those two fields to whichever columns your CSV uses; the header names are not fixed. Business and owner name columns can also be mapped optionally. Mobile numbers must use UK E.164 format beginning `+44`. Blank messages, invalid numbers, duplicate campaign numbers, and suppressed numbers are held or skipped.
 
 ## Scheduling
 
