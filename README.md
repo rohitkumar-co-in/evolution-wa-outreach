@@ -16,7 +16,7 @@ The app refuses to start without secrets. Keep the database volume persistent an
 
 ## CSV columns
 
-Only the mobile number and WhatsApp message are required. During upload, map those two fields to whichever columns your CSV uses; the header names are not fixed. Business and owner name columns can also be mapped optionally. Mobile numbers must use UK E.164 format beginning `+44`. Blank messages, invalid numbers, duplicate campaign numbers, and suppressed numbers are held or skipped.
+Only the mobile number and WhatsApp message are required. During upload, map those two fields to whichever columns your CSV uses; the header names are not fixed. Business and owner name columns can also be mapped optionally. Enter the country calling code as digits in the campaign form (for example, `44` or `91`); it is added to local numbers, with a leading national `0` removed. Numbers already written with `+` or `00` keep their own country code. Final numbers must be valid E.164 international numbers. Blank messages, invalid numbers, duplicate campaign numbers, and suppressed numbers are held or skipped.
 
 ## Scheduling
 
