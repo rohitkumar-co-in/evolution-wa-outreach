@@ -7,9 +7,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DateTime } from 'luxon';
 
-const required = ['APP_SECRET', 'EVOLUTION_API_URL', 'EVOLUTION_API_KEY', 'N8N_WEBHOOK_SECRET'];
+const required = ['EVOLUTION_API_URL', 'EVOLUTION_API_KEY', 'N8N_WEBHOOK_SECRET'];
 for (const key of required) if (!process.env[key]) { console.error(`Missing ${key}`); process.exit(1); }
-if (process.env.APP_SECRET.length < 32 || process.env.N8N_WEBHOOK_SECRET.length < 24) { console.error('APP_SECRET must be at least 32 chars and N8N_WEBHOOK_SECRET at least 24 chars'); process.exit(1); }
+if (!process.env.ADMIN_PASSWORD && !process.env.APP_SECRET) { console.error('Set ADMIN_PASSWORD in Coolify'); process.exit(1); }
+if (process.env.ADMIN_PASSWORD && process.env.ADMIN_PASSWORD.length < 12) { console.error('ADMIN_PASSWORD must be at least 12 characters'); process.exit(1); }
+if (process.env.N8N_WEBHOOK_SECRET.length < 24) { console.error('N8N_WEBHOOK_SECRET must be at least 24 chars'); process.exit(1); }
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 12 * 1024 * 1024 } });
 const dataDir = process.env.DATA_DIR || '/data';
@@ -24,7 +26,7 @@ CREATE INDEX IF NOT EXISTS leads_campaign_status ON leads(campaign_id,status);`)
 const now = () => new Date().toISOString();
 const event = db.prepare('INSERT INTO events(campaign_id,lead_id,kind,detail,created_at) VALUES(?,?,?,?,?)');
 const safeEqual = (a,b) => {const x=Buffer.from(String(a||'')), y=Buffer.from(String(b||'')); return x.length===y.length && crypto.timingSafeEqual(x,y);};
-const auth = (req,res,next) => { const token=(req.headers.authorization||'').replace(/^Bearer\s+/i,''); if (!safeEqual(token,process.env.APP_SECRET)) return res.status(401).json({error:'Unauthorised'}); next(); };
+const auth = (req,res,next) => { const token=(req.headers.authorization||'').replace(/^Bearer\s+/i,''); if (!safeEqual(token,process.env.ADMIN_PASSWORD||process.env.APP_SECRET)) return res.status(401).json({error:'Unauthorised'}); next(); };
 const cleanPhone = value => String(value||'').replace(/[\s().-]/g,'');
 const normalizePhone = (value,countryCode) => {const raw=cleanPhone(value);if(raw.startsWith('+'))return raw;if(raw.startsWith('00'))return `+${raw.slice(2)}`;const code=String(countryCode||'').trim();if(!/^[1-9]\d{0,2}$/.test(code))return '';const national=raw.replace(/\D/g,'').replace(/^0/,'');return national?`+${code}${national}`:'';};
 const normalizeEventPhone = value => {const raw=cleanPhone(value);if(raw.startsWith('+'))return raw;if(raw.startsWith('00'))return `+${raw.slice(2)}`;const digits=raw.replace(/\D/g,'');return digits?`+${digits}`:'';};
